@@ -18,28 +18,31 @@ class CustomerResource(
 
   @PostMapping
   fun saveCustomer(@RequestBody @Valid customerDto: CustomerDto): ResponseEntity<CustomerView> {
-    val savedCustomer: Customer = this.customerService.save(customerDto.toEntity())
-    return ResponseEntity.status(HttpStatus.CREATED).body(CustomerView(savedCustomer))
+      val savedCustomer: Customer = customerService.save(customerDto.toEntity())
+      return ResponseEntity.status(HttpStatus.CREATED).body(CustomerView(savedCustomer))
   }
 
   @GetMapping("/{id}")
   fun findById(@PathVariable id: Long): ResponseEntity<CustomerView> {
-    val customer: Customer = this.customerService.findById(id)
-    return ResponseEntity.status(HttpStatus.OK).body(CustomerView(customer))
+      val customer: Customer = customerService.findById(id)
+      return ResponseEntity.status(HttpStatus.OK).body(CustomerView(customer))
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun deleteCustomer(@PathVariable id: Long) = this.customerService.delete(id)
+  fun deleteCustomer(@PathVariable id: Long) {
+      customerService.delete(id)
+  }
 
   @PatchMapping
-  fun upadateCustomer(
-    @RequestParam(value = "customerId") id: Long,
-    @RequestBody @Valid customerUpdateDto: CustomerUpdateDto
+  fun updateCustomer(
+      @RequestParam(value = "customerId") id: Long,
+      @RequestBody @Valid customerUpdateDto: CustomerUpdateDto
   ): ResponseEntity<CustomerView> {
-    val customer: Customer = this.customerService.findById(id)
-    val cutomerToUpdate: Customer = customerUpdateDto.toEntity(customer)
-    val customerUpdated: Customer = this.customerService.save(cutomerToUpdate)
-    return ResponseEntity.status(HttpStatus.OK).body(CustomerView(customerUpdated))
+      val customer: Customer = customerService.findById(id)
+      val customerToUpdate: Customer = customerUpdateDto.toEntity(customer)
+      val customerUpdated: Customer = customerService.save(customerToUpdate)
+      return ResponseEntity.status(HttpStatus.OK).body(CustomerView(customerUpdated))
   }
+
 }

@@ -16,10 +16,12 @@ data class CreditDto(
   @field:NotNull(message = "Invalid input") val customerId: Long
 ) {
 
-  fun toEntity(): Credit = Credit(
+  fun toEntity(): Credit {
+    return Credit(
     creditValue = this.creditValue,
     dayFirstInstallment = this.dayFirstOfInstallment,
     numberOfInstallments = this.numberOfInstallments,
     customer = Customer(id = this.customerId)
-  )
+    )
+  }
 }
